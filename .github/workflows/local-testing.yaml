@@ -1,4 +1,4 @@
-name: "Workflow for local testing"
+name: "Workflow for local testing (dev)"
 on:
   pull_request:
     branches:
@@ -10,8 +10,10 @@ jobs:
     name: "Checks dev version"
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Dev check PR
-        uses: JJ/github-pr-contains-action@dev # Change this to whatever branch you want to test
+        uses: ./
         id: dev_check_pr
         with:
           github-token: ${{github.token}}
