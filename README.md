@@ -1,14 +1,16 @@
-# A GitHub action that checks pull requests description and contents [![Basic installation and build checks](https://github.com/JJ/github-pr-contains-action/actions/workflows/install-build-checks.yml/badge.svg)](https://github.com/JJ/github-pr-contains-action/actions/workflows/install-build-checks.yml)
+# A GitHub action that checks pull requests description and contents [![Basic installation and build checks](https://github.com/JJ/github-pr-contains-action/actions/workflows/install-build-checks.yml/badge.svg)](https://github.com/JJ/github-pr-contains-action/actions/workflows/install-build-checks.yml)[![Check correct version in README](https://github.com/JJ/github-pr-contains-action/actions/workflows/check-v.yml/badge.svg)](https://github.com/JJ/github-pr-contains-action/actions/workflows/check-v.yml)
 
 This GitHub action checks for the presence/absence of a string or group of
-strings in the body or diff, as well as certain conditions in the PR: number of
-files changed, and number of lines changed.
+strings in the body of the pull request or diff, as well as certain conditions
+in the PR: number of files changed, and number of lines changed.
 
-It uses the GitHub API, so you'll need to provide a token. Don't worry, that's built-in.
+It uses the GitHub API, so you'll need to provide a token. Don't worry, that's
+built-in.
 
 ## Using this action
 
-You would need to put this in a YAML file in the `.github/workflows` directory
+You would need to put this in a YAML file (`check-pr.yml`, for instance) in the
+`.github/workflows` directory:
 
 ```yaml
 name: "Check PR content"
@@ -31,6 +33,8 @@ jobs:
         waivedUsers: "SomeOne|dependabot[bot]"
 ```
 
+The `pull_request` event is needed, because it will use its payload.
+
 The `bodyContains` variable will include the string that we want the body of the
 PR to include, such as checked items in a checklist; obviously
 `bodyDoesNotContain` will hold the opposite, what we don't want to see in the PR
@@ -42,8 +46,8 @@ Same pattern for `diff(Contains|DoesNotContain)`. Can be a word or list of words
 you want in the diff (for instance, you want it to _always_ change code so it
 contains a statement terminator) or don't want in the diff (for instance, you
 don't want it to include TODOs because people never ever _do_ them). If you want
-to allow check marks, remember to use an expression such as `[x]|[X]`, since both are
-admissible as such in a body.
+to allow check marks, remember to use an expression such as `[x]|[X]`, since
+both are admissible as such in a body.
 
 > These strings are unwittingly converted into regular expressions, so any
 > regular expression will also work; `[]()+?*` are escaped so that things such
@@ -58,12 +62,12 @@ it will exit with a warning and with a green status. By default, it has the
 value `"dependabot[bot]"`. If you want to edit more and want to keep dependabot
 PRs from failing, add it to your list.
 
-An example is used as
+If you want to see an example, it is used as
 [.github/workflows/check-PRs-here.yaml](.github/workflows/check-PRs-here.yaml)
 in this repository as well as [this one, which is the one I use for
 testing](.github/workflows/pr.yaml).
 
-You might want to qualify possible events that trigger this action, for intance, this way:
+You might want to qualify possible events that trigger this action; for intance, this way:
 
 ```yaml
   pull_request:
@@ -102,12 +106,12 @@ jobs:
           waivedUsers: "dependabot[bot]|CompanyBigWig"
 ```
 
-It would check that there's only a single file modified (because why would you
-need to change another, if all you want is to add your name to the contributors'
-file), a single line is changed (because you're only one, right?) and that it
-includes a link to your GitHub profile by forcing the diff to contain that
-string. It would also allow the company's big wig to add however many they want,
-with or without links to their profiles.
+This action would check that there's only a single file modified (because why
+would you need to change another, if all you want is to add your name to the
+contributors' file), a single line is changed (because you're only one, right?)
+and that it includes a link to your GitHub profile by forcing the diff to
+contain that string. It would also allow the company's big wig to add however
+many they want, with or without links to their profiles.
 
 ### Working with action outputs
 
